@@ -45,7 +45,7 @@
 
   /* Sizing */
   --top-h:    56px;
-  --project-nav-h: 64px;
+  --project-nav-h: 72px;
   --bot-h:    54px;
   --side-w:   248px;
   --detail-w: 330px;
@@ -74,16 +74,16 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
 }
 
 .project-brand {
-  display: inline-flex; align-items: center; gap: 10px;
+  display: inline-flex; align-items: center; gap: 3px;
   font-weight: 800; font-size: 14px; white-space: nowrap;
 }
 
-.project-brand-mark {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 34px; height: 34px;
-  border: 1px solid #1f6b3d; border-radius: 8px;
-  background: linear-gradient(135deg, #1f6b3d, #2ea04f);
-  color: #fff; font-size: 12px; letter-spacing: 0.04em;
+.project-brand-logo {
+  width: 58px;
+  height: 58px;
+  border-radius: 8px;
+  object-fit: contain;
+  display: block;
 }
 
 .project-nav-links {
@@ -646,12 +646,6 @@ body {
   color: #eef4f0;
   font-size: 14px;
   letter-spacing: 0;
-}
-
-.project-brand-mark {
-  border-color: rgba(123, 176, 140, 0.38);
-  background: #1e6f4c;
-  box-shadow: none;
 }
 
 .project-nav-links a {

@@ -722,6 +722,11 @@ Each insight must:
 
 @app.route("/")
 def index():
+    return render_template("landing.html")
+
+
+@app.route("/dashboard")
+def dashboard():
     defaults = DEFAULT_INPUTS.copy()
     defaults.update(read_shared_inputs())
     return render_template(

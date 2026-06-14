@@ -35,7 +35,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 64px;
+  min-height: 72px;
   border-bottom: 1px solid var(--line);
   background: rgba(13, 17, 23, 0.94);
   backdrop-filter: blur(14px);
@@ -51,23 +51,17 @@ body {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.2rem;
   font-family: "Space Grotesk", Inter, sans-serif;
   font-weight: 700;
 }
 
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid #1f6b3d;
+.brand-logo {
+  width: 58px;
+  height: 58px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #1f6b3d, var(--green));
-  color: #fff;
-  font-size: 0.8rem;
-  letter-spacing: 0.04em;
+  object-fit: contain;
+  display: block;
 }
 
 .nav-links {

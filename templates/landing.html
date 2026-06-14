@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Metalytics AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}?v=6">
+  </head>
+  <body>
+    <main class="site-frame">
+      <section class="hero-panel" id="home">
+        <img class="hero-image" src="{{ url_for('static', filename='landing-forest.png') }}" alt="Forest canopy background">
+        <nav class="landing-nav">
+          <a class="landing-brand" href="/">
+            <img src="{{ url_for('static', filename='logo.png') }}?v=5" alt="Metalytics AI logo">
+            <span>Metalytics AI</span>
+          </a>
+          <div class="landing-links">
+            <a href="#about">About</a>
+            <a href="#platform">Platform</a>
+            <a href="#services">Modules</a>
+            <a href="#impact">Impact</a>
+            <a href="/dashboard" class="nav-pill">Open Dashboard</a>
+          </div>
+        </nav>
+        <div class="hero-copy">
+          <div>
+            <span class="hero-kicker">Sustainability & Circularity Intelligence</span>
+            <h1>Metal recovery decisions, measured in carbon, circularity, and value.</h1>
+          </div>
+          <div class="hero-side">
+            <p>Measure emissions, circularity, metal recovery, monetary opportunity, and regional impact from one connected analytics platform.</p>
+            <div class="hero-actions">
+              <a class="action-primary" href="/dashboard">Get Started</a>
+              <a class="action-secondary" href="#about">Learn More</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="intro-section" id="about">
+        <div class="section-tag">Introduction</div>
+        <div class="intro-grid intro-grid-text">
+          <div class="intro-lede">
+            <h2>Metalytics AI helps industries turn red mud and metal recovery data into environmental, circularity, and business decisions.</h2>
+          </div>
+          <div class="intro-copy">
+            <p>The platform replaces scattered calculations with live dashboards for emissions, resource efficiency, material flow, circularity gap, metal comparison, monetary value, Geo-Impact mapping, Gemini AI insights, and PDF reporting.</p>
+            <div class="stats-row">
+              <div><strong>10+</strong><span>Recoverable metals and profiles</span></div>
+              <div><strong>30+</strong><span>Sustainability readings calculated</span></div>
+              <div><strong>5</strong><span>Connected analysis pages</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="services-section" id="services">
+        <div class="center-head">
+          <div class="section-tag">Modules</div>
+          <h2>Professional Sustainability Analytics</h2>
+          <p>Explore the core tools designed to measure performance, compare recovery pathways, and communicate results clearly.</p>
+        </div>
+        <div class="service-list">
+          <a class="service-row" href="/dashboard">
+            <span><strong>Live Sustainability Dashboard</strong><small>Carbon emissions, energy, water, material flow, circularity score, and detailed metric cards.</small></span>
+            <b>↗</b>
+          </a>
+          <a class="service-row active" href="/comparison">
+            <span><strong>Metal Comparison</strong><small>Compare two or three red-mud-derived metals side by side using shared production metrics.</small></span>
+            <b>↗</b>
+          </a>
+          <a class="service-row" href="http://127.0.0.1:5001/">
+            <span><strong>Circularity Gap Analysis</strong><small>Identify how much value and material remain locked in unrecovered waste streams.</small></span>
+            <b>↗</b>
+          </a>
+          <a class="service-row" href="http://127.0.0.1:5001/monetary">
+            <span><strong>Monetary Impact</strong><small>Convert recovered material and unrecovered waste into current value, lost value, and total rupee opportunity.</small></span>
+            <b>↗</b>
+          </a>
+          <a class="service-row" href="/geomap/">
+            <span><strong>Geo-Impact Mapper</strong><small>Map production, transport, recycling, and waste impact to locate environmental hotspots.</small></span>
+            <b>↗</b>
+          </a>
+        </div>
+      </section>
+
+      <section class="platform-section" id="platform">
+        <div>
+          <div class="section-tag dark">Platform</div>
+          <h2>One shared metric model across every page.</h2>
+          <p>Production amount, useful output, waste generated, recovered material, and recycled content stay synchronized between the dashboard, circularity gap, comparison, and monetary pages.</p>
+        </div>
+        <div class="platform-cards">
+          <article><strong>Environmental Footprint</strong><span>CO2, energy, water, process impact, and resource efficiency.</span></article>
+          <article><strong>Circular Economy</strong><span>Recovery potential, circularity score, material flow, and waste gap.</span></article>
+          <article><strong>AI Interpretation</strong><span>Gemini insights convert readings into practical recommendations.</span></article>
+        </div>
+      </section>
+
+      <section class="impact-section" id="impact">
+        <div class="impact-copy">
+          <div class="section-tag">Impact</div>
+          <h2>From sustainability readings to rupee value and reports.</h2>
+          <p>Metalytics AI translates recovery performance into current monetary value, monetary gap, and total opportunity, then exports the complete project state as a PDF report including Gemini insights.</p>
+          <div class="impact-actions">
+            <a class="action-primary" href="http://127.0.0.1:5001/monetary">Explore Monetary Impact</a>
+            <a class="impact-dashboard-link" href="/dashboard">Launch Dashboard</a>
+          </div>
+        </div>
+        <div class="report-card">
+          <span>Complete Report</span>
+          <strong>Dashboard + Gap + Comparison + Monetary + AI Insights</strong>
+          <p>Designed for teams that need clear sustainability evidence, decision support, and circularity communication in one place.</p>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <a class="landing-brand" href="/">
+          <img src="{{ url_for('static', filename='logo.png') }}?v=5" alt="Metalytics AI logo">
+          <span>Metalytics AI</span>
+        </a>
+        <p>AI-enabled sustainability, circularity, monetary, and geospatial analytics for metal recovery and red mud resource utilization.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/dashboard">Dashboard</a>
+        <a href="/comparison">Compare Metals</a>
+        <a href="/geomap/">Geo-Impact Mapper</a>
+        <a href="http://127.0.0.1:5001/">Circularity Gap</a>
+        <a href="http://127.0.0.1:5001/monetary">Monetary Impact</a>
+      </div>
+      <div class="footer-bottom">
+        <span>Metalytics AI</span>
+        <span>Built for circular metal production decisions.</span>
+      </div>
+    </footer>
+  </body>
+</html>

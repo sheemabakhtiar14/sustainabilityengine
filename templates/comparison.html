@@ -13,11 +13,12 @@
   <body>
     <nav class="top-nav">
       <a class="brand" href="/">
-        <span class="brand-mark">SE</span>
+        <img class="brand-logo" src="{{ url_for('static', filename='logo.png') }}?v=5" alt="Metalytics AI logo">
         <span>Metalytics AI</span>
       </a>
       <div class="nav-links">
-        <a href="/">Dashboard</a>
+        <a href="/">Home</a>
+        <a href="/dashboard">Dashboard</a>
         <a class="active" href="/comparison">Compare Metals</a>
         <a href="/geomap/">Geo-Impact Mapper</a>
         <a href="http://127.0.0.1:5001/">Circularity Gap</a>

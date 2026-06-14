@@ -2,3 +2,4 @@ flask
 pandas
 plotly
 google-generativeai
+python-dotenv

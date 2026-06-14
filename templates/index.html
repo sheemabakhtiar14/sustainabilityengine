@@ -12,12 +12,12 @@
   </head>
   <body>
     <nav class="top-nav">
-      <a class="brand" href="http://127.0.0.1:5000/">
+      <a class="brand" href="/">
         <span class="brand-mark">SE</span>
         <span>Sustainability Engine</span>
       </a>
       <div class="nav-links">
-        <a class="active" href="http://127.0.0.1:5000/">Dashboard</a>
+        <a class="active" href="/">Dashboard</a>
         <a href="http://127.0.0.1:5001/">Circularity Gap</a>
       </div>
     </nav>
@@ -33,6 +33,7 @@
             {% endfor %}
           </select>
         </label>
+        <p class="input-note">Red-mud reference profiles affect feed, recovery, energy, water and process CO2 estimates.</p>
 
         <label>
           <span>Production Amount (kg)</span>
@@ -108,6 +109,16 @@
           <span class="kpi-icon">REC</span>
           <div class="kpi-label">Circularity Score</div>
           <div class="kpi-value"><span data-card="circularity_score">0</span><span class="kpi-unit" data-card-unit="circularity_score">/ 100</span></div>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-icon">RM</span>
+          <div class="kpi-label">Red Mud Feed</div>
+          <div class="kpi-value"><span data-card="red_mud_feed_required">0</span><span class="kpi-unit" data-card-unit="red_mud_feed_required">kg feed</span></div>
+        </article>
+        <article class="kpi-card">
+          <span class="kpi-icon">YLD</span>
+          <div class="kpi-label">Metal Recovery</div>
+          <div class="kpi-value"><span data-card="metal_recovery">0</span><span class="kpi-unit" data-card-unit="metal_recovery">%</span></div>
         </article>
       </section>
 

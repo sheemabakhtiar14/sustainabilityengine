@@ -4,6 +4,7 @@ const recycledValue = document.querySelector("#recycled-value");
 const downloadLink = document.querySelector("#download-link");
 const insightsButton = document.querySelector("#insights-button");
 const insightsContainer = document.querySelector("#insights");
+const INSIGHTS_TIMEOUT_MS = 30000;
 
 const chartTargets = {
   emissions: "emissions-chart",
@@ -191,12 +192,15 @@ insightsButton.addEventListener("click", async () => {
   insightsButton.disabled = true;
   insightsButton.textContent = "Analysing sustainability data...";
   insightsContainer.innerHTML = "";
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), INSIGHTS_TIMEOUT_MS);
 
   try {
     const response = await fetch("/api/insights", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(collectInputs()),
+      signal: controller.signal,
     });
 
     if (!response.ok) {
@@ -206,8 +210,13 @@ insightsButton.addEventListener("click", async () => {
     const payload = await response.json();
     renderInsights(payload.insights);
   } catch (error) {
-    insightsContainer.innerHTML = `<div class="insight-card warn">${error.message}</div>`;
+    const message =
+      error.name === "AbortError"
+        ? "Gemini took too long to respond. Please try again."
+        : error.message;
+    insightsContainer.innerHTML = `<div class="insight-card warn">${message}</div>`;
   } finally {
+    window.clearTimeout(timeout);
     insightsButton.disabled = false;
     insightsButton.textContent = "Generate AI Insights with Gemini";
   }

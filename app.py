@@ -7,20 +7,108 @@ from dataclasses import asdict, dataclass
 
 import google.generativeai as genai
 import plotly.graph_objects as go
+from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, render_template, request
 
 from shared_inputs import read_shared_inputs, write_shared_inputs
 
 
+load_dotenv()
+
 app = Flask(__name__)
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_TIMEOUT_SECONDS = int(os.getenv("GEMINI_TIMEOUT_SECONDS", "25"))
 
 EMISSION_FACTORS = {
     "Electricity": 0.82,
     "Diesel": 2.68,
     "Truck Transport": 0.12,
     "Water": 0.0003,
+}
+
+METAL_PROFILES = {
+    "Aluminium": {
+        "source": "Residual alumina in red mud",
+        "grade_percent": 9.3,
+        "recovery_percent": 55,
+        "energy_kwh_per_kg": 8.5,
+        "water_l_per_kg": 18,
+        "process_co2_kg_per_kg": 6.97,
+    },
+    "Steel": {
+        "source": "Iron oxides converted to steel feed",
+        "grade_percent": 22.7,
+        "recovery_percent": 70,
+        "energy_kwh_per_kg": 4.2,
+        "water_l_per_kg": 12,
+        "process_co2_kg_per_kg": 3.44,
+    },
+    "Copper": {
+        "source": "Trace red-mud copper recovery",
+        "grade_percent": 0.01,
+        "recovery_percent": 35,
+        "energy_kwh_per_kg": 18,
+        "water_l_per_kg": 45,
+        "process_co2_kg_per_kg": 14.76,
+    },
+    "Titanium": {
+        "source": "Titanium dioxide minerals",
+        "grade_percent": 4.5,
+        "recovery_percent": 60,
+        "energy_kwh_per_kg": 12,
+        "water_l_per_kg": 30,
+        "process_co2_kg_per_kg": 9.84,
+    },
+    "Iron": {
+        "source": "Iron oxides in bauxite residue",
+        "grade_percent": 22.7,
+        "recovery_percent": 75,
+        "energy_kwh_per_kg": 3.8,
+        "water_l_per_kg": 10,
+        "process_co2_kg_per_kg": 3.12,
+    },
+    "Scandium": {
+        "source": "Trace scandium in bauxite residue",
+        "grade_percent": 0.012,
+        "recovery_percent": 65,
+        "energy_kwh_per_kg": 85,
+        "water_l_per_kg": 220,
+        "process_co2_kg_per_kg": 69.7,
+    },
+    "Gallium": {
+        "source": "Gallium associated with Bayer liquor/red mud streams",
+        "grade_percent": 0.005,
+        "recovery_percent": 15,
+        "energy_kwh_per_kg": 60,
+        "water_l_per_kg": 160,
+        "process_co2_kg_per_kg": 49.2,
+    },
+    "Vanadium": {
+        "source": "Trace vanadium in bauxite residue",
+        "grade_percent": 0.06,
+        "recovery_percent": 45,
+        "energy_kwh_per_kg": 38,
+        "water_l_per_kg": 95,
+        "process_co2_kg_per_kg": 31.16,
+    },
+    "Yttrium": {
+        "source": "Rare-earth-bearing red mud fraction",
+        "grade_percent": 0.009,
+        "recovery_percent": 50,
+        "energy_kwh_per_kg": 72,
+        "water_l_per_kg": 180,
+        "process_co2_kg_per_kg": 59.04,
+    },
+    "Rare Earth Oxides": {
+        "source": "Combined rare-earth oxide fraction",
+        "grade_percent": 0.1,
+        "recovery_percent": 55,
+        "energy_kwh_per_kg": 48,
+        "water_l_per_kg": 130,
+        "process_co2_kg_per_kg": 39.36,
+    },
 }
 
 CHART_THEME = {
@@ -45,7 +133,7 @@ DEFAULT_INPUTS = {
     "recycled_content": 40.0,
 }
 
-METAL_TYPES = ["Aluminium", "Steel", "Copper", "Titanium"]
+METAL_TYPES = list(METAL_PROFILES.keys())
 
 
 @dataclass
@@ -92,6 +180,7 @@ def parse_inputs(data: dict) -> SustainabilityInputs:
 
 
 def calculate_metrics(inputs: SustainabilityInputs) -> dict:
+    metal_profile = METAL_PROFILES[inputs.metal_type]
     electricity_co2 = inputs.electricity_used * EMISSION_FACTORS["Electricity"]
     diesel_co2 = inputs.diesel_used * EMISSION_FACTORS["Diesel"]
     transport_co2 = (
@@ -123,6 +212,19 @@ def calculate_metrics(inputs: SustainabilityInputs) -> dict:
         100,
     )
 
+    grade_fraction = metal_profile["grade_percent"] / 100
+    metal_recovery_fraction = metal_profile["recovery_percent"] / 100
+    red_mud_feed_required = (
+        inputs.production_amount / (grade_fraction * metal_recovery_fraction)
+        if grade_fraction > 0 and metal_recovery_fraction > 0
+        else 0
+    )
+    contained_metal = red_mud_feed_required * grade_fraction
+    unrecovered_metal = max(0, contained_metal - inputs.production_amount)
+    metal_energy = inputs.production_amount * metal_profile["energy_kwh_per_kg"]
+    metal_water = inputs.production_amount * metal_profile["water_l_per_kg"]
+    metal_process_co2 = inputs.production_amount * metal_profile["process_co2_kg_per_kg"]
+
     return {
         "electricity_co2": electricity_co2,
         "diesel_co2": diesel_co2,
@@ -136,6 +238,13 @@ def calculate_metrics(inputs: SustainabilityInputs) -> dict:
         "recovery_potential": recovery_potential,
         "waste_score": waste_score,
         "circularity_score": circularity_score,
+        "metal_profile": metal_profile,
+        "red_mud_feed_required": red_mud_feed_required,
+        "contained_metal": contained_metal,
+        "unrecovered_metal": unrecovered_metal,
+        "metal_energy": metal_energy,
+        "metal_water": metal_water,
+        "metal_process_co2": metal_process_co2,
     }
 
 
@@ -154,6 +263,40 @@ def build_result_rows(inputs: SustainabilityInputs, metrics: dict) -> list[dict]
             "Value": round(metrics["recovery_potential"], 2),
         },
         {"Metric": "Circularity Score", "Value": round(metrics["circularity_score"], 2)},
+        {"Metric": "Selected Metal", "Value": inputs.metal_type},
+        {"Metric": "Red Mud Source", "Value": metrics["metal_profile"]["source"]},
+        {
+            "Metric": "Reference Red Mud Grade (%)",
+            "Value": round(metrics["metal_profile"]["grade_percent"], 4),
+        },
+        {
+            "Metric": "Metal Recovery Assumption (%)",
+            "Value": round(metrics["metal_profile"]["recovery_percent"], 2),
+        },
+        {
+            "Metric": "Estimated Red Mud Feed Required (kg)",
+            "Value": round(metrics["red_mud_feed_required"], 2),
+        },
+        {
+            "Metric": "Contained Metal in Feed (kg)",
+            "Value": round(metrics["contained_metal"], 2),
+        },
+        {
+            "Metric": "Unrecovered Metal in Residue (kg)",
+            "Value": round(metrics["unrecovered_metal"], 2),
+        },
+        {
+            "Metric": "Metal-Specific Energy Estimate (kWh)",
+            "Value": round(metrics["metal_energy"], 2),
+        },
+        {
+            "Metric": "Metal-Specific Water Estimate (L)",
+            "Value": round(metrics["metal_water"], 2),
+        },
+        {
+            "Metric": "Metal-Specific Process CO2 (kg)",
+            "Value": round(metrics["metal_process_co2"], 2),
+        },
     ]
 
 
@@ -304,6 +447,14 @@ def build_payload(inputs: SustainabilityInputs) -> dict:
                 "value": f"{metrics['circularity_score']:.1f}",
                 "unit": "/ 100",
             },
+            "red_mud_feed_required": {
+                "value": f"{metrics['red_mud_feed_required']:,.0f}",
+                "unit": "kg feed",
+            },
+            "metal_recovery": {
+                "value": f"{metrics['metal_profile']['recovery_percent']:.0f}",
+                "unit": "%",
+            },
         },
         "table": build_result_rows(inputs, metrics),
         "charts": build_charts(inputs, metrics),
@@ -331,6 +482,11 @@ Key sustainability metrics:
 - Material Recovery Rate: {metrics['recovery_potential']:.1f}%
 - Circularity Score: {metrics['circularity_score']:.1f}/100
 - Recycled Content: {inputs.recycled_content:.0f}%
+- Red Mud Source Profile: {metrics['metal_profile']['source']}
+- Reference Red Mud Grade: {metrics['metal_profile']['grade_percent']:.4f}%
+- Estimated Red Mud Feed Required: {metrics['red_mud_feed_required']:.2f} kg
+- Metal-Specific Energy Estimate: {metrics['metal_energy']:.2f} kWh
+- Metal-Specific Process CO2 Estimate: {metrics['metal_process_co2']:.2f} kg
 
 Provide 4-5 concise, actionable sustainability insights based specifically on these numbers.
 Each insight must:
@@ -339,10 +495,15 @@ Each insight must:
 - No bullet points, dashes, headers, or markdown
 """
     try:
+        if not GEMINI_API_KEY:
+            return "Warning Could not fetch Gemini insights: GEMINI_API_KEY or GOOGLE_API_KEY is not configured."
         genai.configure(api_key=GEMINI_API_KEY)
-        model = genai.GenerativeModel("gemini-1.5-flash")
-        response = model.generate_content(prompt)
-        return response.text
+        model = genai.GenerativeModel(GEMINI_MODEL)
+        response = model.generate_content(
+            prompt,
+            request_options={"timeout": GEMINI_TIMEOUT_SECONDS},
+        )
+        return response.text or "Warning Gemini returned an empty response."
     except Exception as exc:
         return f"Warning Could not fetch Gemini insights: {exc}"
 
@@ -393,4 +554,4 @@ def download_report():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)

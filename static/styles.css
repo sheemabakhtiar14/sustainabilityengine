@@ -138,6 +138,13 @@ label strong {
   font-size: 0.76rem;
 }
 
+.input-note {
+  margin: -0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
 input,
 select {
   width: 100%;
@@ -221,7 +228,7 @@ h1 {
 
 .kpi-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
   margin-bottom: 2rem;
 }

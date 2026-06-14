@@ -899,7 +899,7 @@ body {
 
 /* Premium Metalytics AI redesign overrides */
 :root {
-  --dk: #dedad8;
+  --dk: #f7f6ef;
   --dk-s: #e8e6df;
   --dk-card: #ffffff;
   --dk-border: rgba(16, 20, 16, 0.10);
@@ -928,9 +928,7 @@ body {
 
 html,
 body {
-  background:
-    radial-gradient(circle at 82% 10%, rgba(142, 240, 0, 0.11), transparent 30%),
-    linear-gradient(135deg, #dedad8, #e9e7e1);
+  background: #f7f6ef;
   color: var(--lt-text);
 }
 

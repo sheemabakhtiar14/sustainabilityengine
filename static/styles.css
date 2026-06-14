@@ -119,6 +119,45 @@ body {
   gap: 0.9rem;
 }
 
+.field-heading {
+  margin-bottom: 0.5rem;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.metal-picker {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(33, 38, 45, 0.55);
+  padding: 0.35rem 0.55rem;
+}
+
+.check-row input {
+  width: 16px;
+  min-height: 16px;
+  accent-color: var(--green);
+  padding: 0;
+}
+
+.check-row span {
+  color: var(--soft);
+  font-size: 0.86rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
 label {
   display: grid;
   gap: 0.35rem;
@@ -143,6 +182,10 @@ label strong {
   color: var(--muted);
   font-size: 0.78rem;
   line-height: 1.45;
+}
+
+.warn-text {
+  color: var(--amber);
 }
 
 input,
@@ -325,6 +368,61 @@ h1 {
   padding: 0.5rem;
 }
 
+.chart-panel-wide {
+  min-height: 470px;
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.comparison-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: linear-gradient(145deg, var(--panel), var(--panel-2));
+  padding: 1.2rem;
+}
+
+.comparison-card h3 {
+  margin: 0 0 0.4rem;
+  color: var(--text);
+  font-family: "Space Grotesk", Inter, sans-serif;
+  font-size: 1.2rem;
+}
+
+.comparison-card p {
+  min-height: 42px;
+  margin: 0 0 1rem;
+  color: var(--muted);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.comparison-stats {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.comparison-stat {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.45rem;
+}
+
+.comparison-stat span {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+.comparison-stat strong {
+  color: var(--green-soft);
+  text-align: right;
+}
+
 .table-wrap {
   overflow: hidden;
   border: 1px solid var(--line);
@@ -418,7 +516,8 @@ tr:last-child td {
 
 @media (max-width: 1100px) {
   .kpi-grid,
-  .chart-grid {
+  .chart-grid,
+  .comparison-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -461,7 +560,8 @@ tr:last-child td {
   }
 
   .kpi-grid,
-  .chart-grid {
+  .chart-grid,
+  .comparison-grid {
     grid-template-columns: 1fr;
   }
 }

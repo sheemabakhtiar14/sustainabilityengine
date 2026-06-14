@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Metal Comparison</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <a class="brand" href="/">
+        <span class="brand-mark">SE</span>
+        <span>Sustainability Engine</span>
+      </a>
+      <div class="nav-links">
+        <a href="/">Dashboard</a>
+        <a class="active" href="/comparison">Compare Metals</a>
+        <a href="http://127.0.0.1:5001/">Circularity Gap</a>
+      </div>
+    </nav>
+
+    <aside class="sidebar">
+      <div class="sidebar-title">Comparison Inputs</div>
+      <form id="comparison-form" class="input-stack">
+        <div>
+          <div class="field-heading">Pick 2 or 3 metals</div>
+          <div class="metal-picker">
+            {% for metal_type in metal_types %}
+              <label class="check-row">
+                <input
+                  type="checkbox"
+                  name="metals"
+                  value="{{ metal_type }}"
+                  {% if metal_type in ["Aluminium", "Titanium"] %}checked{% endif %}
+                >
+                <span>{{ metal_type }}</span>
+              </label>
+            {% endfor %}
+          </div>
+          <p class="input-note" id="selection-note">2 metals selected.</p>
+        </div>
+
+        <label>
+          <span>Production Amount (kg)</span>
+          <input name="production_amount" type="number" min="1" step="1" value="{{ defaults.production_amount }}">
+        </label>
+
+        <label>
+          <span>Electricity Used (kWh)</span>
+          <input name="electricity_used" type="number" min="0" step="1" value="{{ defaults.electricity_used }}">
+        </label>
+
+        <label>
+          <span>Diesel Used (Liters)</span>
+          <input name="diesel_used" type="number" min="0" step="1" value="{{ defaults.diesel_used }}">
+        </label>
+
+        <label>
+          <span>Transport Distance (km)</span>
+          <input name="transport_distance" type="number" min="0" step="1" value="{{ defaults.transport_distance }}">
+        </label>
+
+        <label>
+          <span>Water Used (Liters)</span>
+          <input name="water_used" type="number" min="0" step="1" value="{{ defaults.water_used }}">
+        </label>
+
+        <label>
+          <span>Waste Generated (kg)</span>
+          <input name="waste_generated" type="number" min="0" step="1" value="{{ defaults.waste_generated }}">
+        </label>
+
+        <label>
+          <span>Recovered Material (kg)</span>
+          <input name="recovered_material" type="number" min="0" step="1" value="{{ defaults.recovered_material }}">
+        </label>
+
+        <label>
+          <span>Useful Output (kg)</span>
+          <input name="useful_output" type="number" min="0" step="1" value="{{ defaults.useful_output }}">
+        </label>
+
+        <label>
+          <span>Recycled Content (%) <strong id="recycled-value">{{ defaults.recycled_content|int }}</strong></span>
+          <input name="recycled_content" type="range" min="0" max="100" step="1" value="{{ defaults.recycled_content }}">
+        </label>
+      </form>
+    </aside>
+
+    <main class="dashboard">
+      <section class="hero-header">
+        <div class="hero-badge">Metal Comparison</div>
+        <h1>Side-by-Side Red Mud Metal Analysis</h1>
+        <p>Compare 2 or 3 metals under the same production, resource and circularity assumptions.</p>
+      </section>
+
+      <section>
+        <h2 class="section-header"><span>Comparison</span> Cards</h2>
+        <div class="comparison-grid" id="comparison-cards"></div>
+      </section>
+
+      <section>
+        <h2 class="section-header"><span>Grouped</span> Metrics</h2>
+        <div class="chart-panel chart-panel-wide" id="comparison-chart"></div>
+      </section>
+
+      <section>
+        <h2 class="section-header"><span>Detailed</span> Comparison Table</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Metal</th>
+                <th>Grade %</th>
+                <th>Recovery %</th>
+                <th>Red Mud Feed kg</th>
+                <th>Operational CO2 kg</th>
+                <th>Total Energy kWh</th>
+                <th>Input Water L</th>
+                <th>Energy kWh</th>
+                <th>Metal Water L</th>
+                <th>Process CO2 kg</th>
+                <th>Circularity</th>
+              </tr>
+            </thead>
+            <tbody id="comparison-table"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='comparison.js') }}"></script>
+  </body>
+</html>

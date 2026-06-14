@@ -461,6 +461,78 @@ def build_payload(inputs: SustainabilityInputs) -> dict:
     }
 
 
+def parse_comparison_inputs(data: dict) -> tuple[SustainabilityInputs, list[str]]:
+    selected_metals = data.get("metals") or ["Aluminium", "Titanium"]
+    selected_metals = [metal for metal in selected_metals if metal in METAL_TYPES]
+
+    if len(selected_metals) < 2:
+        selected_metals = ["Aluminium", "Titanium"]
+    selected_metals = selected_metals[:3]
+
+    base_inputs = parse_inputs({**data, "metal_type": selected_metals[0]})
+    return base_inputs, selected_metals
+
+
+def build_comparison_payload(data: dict) -> dict:
+    base_inputs, selected_metals = parse_comparison_inputs(data)
+    comparison_rows = []
+
+    for metal in selected_metals:
+        inputs = SustainabilityInputs(**{**asdict(base_inputs), "metal_type": metal})
+        metrics = calculate_metrics(inputs)
+        comparison_rows.append(
+            {
+                "metal": metal,
+                "source": metrics["metal_profile"]["source"],
+                "grade_percent": round(metrics["metal_profile"]["grade_percent"], 4),
+                "recovery_percent": round(metrics["metal_profile"]["recovery_percent"], 2),
+                "red_mud_feed_required": round(metrics["red_mud_feed_required"], 2),
+                "total_energy": round(metrics["total_energy"], 2),
+                "input_water": round(inputs.water_used, 2),
+                "metal_energy": round(metrics["metal_energy"], 2),
+                "metal_water": round(metrics["metal_water"], 2),
+                "metal_process_co2": round(metrics["metal_process_co2"], 2),
+                "total_co2": round(metrics["total_co2"], 2),
+                "circularity_score": round(metrics["circularity_score"], 2),
+            }
+        )
+
+    chart = go.Figure()
+    chart_metrics = [
+        ("Red Mud Feed (kg)", "red_mud_feed_required"),
+        ("Operational CO2 (kg)", "total_co2"),
+        ("Total Energy (kWh)", "total_energy"),
+        ("Metal Energy (kWh)", "metal_energy"),
+        ("Process CO2 (kg)", "metal_process_co2"),
+    ]
+
+    for label, key in chart_metrics:
+        chart.add_trace(
+            go.Bar(
+                name=label,
+                x=[row["metal"] for row in comparison_rows],
+                y=[row[key] for row in comparison_rows],
+                text=[f"{row[key]:,.0f}" for row in comparison_rows],
+                textposition="outside",
+            )
+        )
+
+    chart.update_layout(
+        title="Metal Comparison",
+        barmode="group",
+        xaxis={"showgrid": False, "color": "#8b949e"},
+        yaxis={"showgrid": True, "gridcolor": "#21262d", "color": "#8b949e"},
+        **CHART_THEME,
+    )
+
+    return {
+        "inputs": asdict(base_inputs),
+        "metals": selected_metals,
+        "rows": comparison_rows,
+        "chart": chart.to_plotly_json(),
+    }
+
+
 def generate_csv(rows: list[dict]) -> str:
     output = io.StringIO()
     writer = csv.DictWriter(output, fieldnames=["Metric", "Value"])
@@ -519,6 +591,17 @@ def index():
     )
 
 
+@app.route("/comparison")
+def comparison():
+    defaults = DEFAULT_INPUTS.copy()
+    defaults.update(read_shared_inputs())
+    return render_template(
+        "comparison.html",
+        defaults=defaults,
+        metal_types=METAL_TYPES,
+    )
+
+
 @app.post("/api/calculate")
 def api_calculate():
     inputs = parse_inputs(request.get_json(silent=True) or {})
@@ -529,6 +612,14 @@ def api_calculate():
 @app.get("/api/shared")
 def api_shared():
     return jsonify(read_shared_inputs())
+
+
+@app.post("/api/compare")
+def api_compare():
+    data = request.get_json(silent=True) or {}
+    base_inputs, _ = parse_comparison_inputs(data)
+    write_shared_inputs(asdict(base_inputs))
+    return jsonify(build_comparison_payload(data))
 
 
 @app.post("/api/insights")

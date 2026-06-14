@@ -28,10 +28,10 @@ MONETARY_DEFAULTS = {
 CHART_THEME = {
     "paper_bgcolor": "rgba(0,0,0,0)",
     "plot_bgcolor": "rgba(0,0,0,0)",
-    "font": {"family": "Inter", "color": "#8b949e", "size": 12},
-    "title_font": {"family": "Space Grotesk", "color": "#e6edf3", "size": 15},
-    "colorway": ["#2ea04f", "#f78166", "#388bfd", "#d29922"],
-    "margin": {"t": 50, "b": 35, "l": 35, "r": 20},
+    "font": {"family": "Inter", "color": "#596158", "size": 12},
+    "title_font": {"family": "Space Grotesk", "color": "#101410", "size": 17},
+    "colorway": ["#004d2d", "#d90f0f", "#0f8f56", "#8ef000"],
+    "margin": {"t": 56, "b": 36, "l": 36, "r": 22},
 }
 
 
@@ -149,8 +149,8 @@ def build_charts(inputs: GapInputs, metrics: dict) -> dict:
             labels=["Circularity Achieved", "Circularity Gap"],
             values=[metrics["circularity_index"], metrics["circularity_gap"]],
             hole=0.6,
-            marker={"colors": ["#2ea04f", "#f78166"]},
-            textfont={"color": "#e6edf3"},
+            marker={"colors": ["#004d2d", "#d90f0f"]},
+            textfont={"color": "#101410"},
             textposition="outside",
         )
     )
@@ -172,7 +172,7 @@ def build_charts(inputs: GapInputs, metrics: dict) -> dict:
                 metrics["waste_reduction"],
             ],
             marker={
-                "color": ["#2ea04f", "#7ee8a2", "#388bfd", "#d29922"],
+                "color": ["#004d2d", "#0f8f56", "#8ef000", "#b8d8c3"],
                 "line": {"width": 0},
             },
             text=[
@@ -182,17 +182,17 @@ def build_charts(inputs: GapInputs, metrics: dict) -> dict:
                 f"{metrics['waste_reduction']:.1f}%",
             ],
             textposition="outside",
-            textfont={"color": "#e6edf3"},
+            textfont={"color": "#101410"},
         )
     )
     component_fig.update_layout(
         title="Component Contribution",
-        xaxis={"showgrid": False, "color": "#8b949e"},
+        xaxis={"showgrid": False, "color": "#596158"},
         yaxis={
             "range": [0, 115],
             "showgrid": True,
-            "gridcolor": "#21262d",
-            "color": "#8b949e",
+            "gridcolor": "#d4d6cf",
+            "color": "#596158",
         },
     )
     apply_theme(component_fig)
@@ -276,7 +276,7 @@ def build_monetary_chart(impact: dict) -> dict:
                 impact["total_opportunity"],
             ],
             marker={
-                "color": ["#2ea04f", "#f78166", "#388bfd"],
+                "color": ["#004d2d", "#d90f0f", "#0f8f56"],
                 "line": {"width": 0},
             },
             text=[
@@ -285,13 +285,13 @@ def build_monetary_chart(impact: dict) -> dict:
                 f"₹{impact['total_opportunity']:,.0f}",
             ],
             textposition="outside",
-            textfont={"color": "#e6edf3"},
+            textfont={"color": "#101410"},
         )
     )
     fig.update_layout(
         title="Circularity Value in Rupees",
-        xaxis={"showgrid": False, "color": "#8b949e"},
-        yaxis={"showgrid": True, "gridcolor": "#21262d", "color": "#8b949e"},
+        xaxis={"showgrid": False, "color": "#596158"},
+        yaxis={"showgrid": True, "gridcolor": "#d4d6cf", "color": "#596158"},
         **CHART_THEME,
     )
     return fig.to_plotly_json()

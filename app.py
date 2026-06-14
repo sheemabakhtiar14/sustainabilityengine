@@ -116,10 +116,10 @@ METAL_PROFILES = {
 CHART_THEME = {
     "paper_bgcolor": "rgba(0,0,0,0)",
     "plot_bgcolor": "rgba(0,0,0,0)",
-    "font": {"family": "Inter", "color": "#8b949e", "size": 12},
-    "title_font": {"family": "Space Grotesk", "color": "#e6edf3", "size": 15},
-    "colorway": ["#2ea04f", "#7ee8a2", "#388bfd", "#d29922", "#f78166"],
-    "margin": {"t": 50, "b": 30, "l": 10, "r": 10},
+    "font": {"family": "Inter", "color": "#596158", "size": 12},
+    "title_font": {"family": "Space Grotesk", "color": "#101410", "size": 17},
+    "colorway": ["#004d2d", "#0f8f56", "#8ef000", "#1f8272", "#d90f0f"],
+    "margin": {"t": 56, "b": 36, "l": 20, "r": 18},
 }
 
 DEFAULT_INPUTS = {
@@ -319,8 +319,8 @@ def build_charts(inputs: SustainabilityInputs, metrics: dict) -> dict:
                 metrics["water_co2"],
             ],
             hole=0.45,
-            marker={"colors": ["#2ea04f", "#7ee8a2", "#388bfd", "#d29922"]},
-            textfont={"color": "#e6edf3"},
+            marker={"colors": ["#004d2d", "#0f8f56", "#8ef000", "#b8d8c3"]},
+            textfont={"color": "#101410"},
             textposition="outside",
         )
     )
@@ -338,7 +338,7 @@ def build_charts(inputs: SustainabilityInputs, metrics: dict) -> dict:
             y=["Efficiency", "Recovery", "Circularity", "Recycled Content"],
             orientation="h",
             marker={
-                "color": ["#2ea04f", "#7ee8a2", "#388bfd", "#d29922"],
+                "color": ["#004d2d", "#0f8f56", "#8ef000", "#b8d8c3"],
                 "line": {"width": 0},
             },
             text=[
@@ -348,13 +348,13 @@ def build_charts(inputs: SustainabilityInputs, metrics: dict) -> dict:
                 f"{inputs.recycled_content:.1f}%",
             ],
             textposition="outside",
-            textfont={"color": "#e6edf3", "size": 12},
+            textfont={"color": "#101410", "size": 12},
         )
     )
     performance_fig.update_layout(
         title="Sustainability Performance (%)",
-        xaxis={"range": [0, 115], "showgrid": False, "zeroline": False, "color": "#8b949e"},
-        yaxis={"showgrid": False, "color": "#c9d1d9"},
+        xaxis={"range": [0, 115], "showgrid": False, "zeroline": False, "color": "#596158"},
+        yaxis={"showgrid": False, "color": "#101410"},
     )
     apply_theme(performance_fig)
 
@@ -368,7 +368,7 @@ def build_charts(inputs: SustainabilityInputs, metrics: dict) -> dict:
                 inputs.useful_output,
             ],
             marker={
-                "color": ["#388bfd", "#f78166", "#d29922", "#2ea04f"],
+                "color": ["#1f8272", "#d90f0f", "#8ef000", "#004d2d"],
                 "line": {"width": 0},
             },
             text=[
@@ -378,13 +378,13 @@ def build_charts(inputs: SustainabilityInputs, metrics: dict) -> dict:
                 f"{inputs.useful_output:,.0f} kg",
             ],
             textposition="outside",
-            textfont={"color": "#e6edf3"},
+            textfont={"color": "#101410"},
         )
     )
     material_fig.update_layout(
         title="Material Flow (kg)",
-        xaxis={"showgrid": False, "color": "#8b949e"},
-        yaxis={"showgrid": True, "gridcolor": "#21262d", "color": "#8b949e"},
+        xaxis={"showgrid": False, "color": "#596158"},
+        yaxis={"showgrid": True, "gridcolor": "#d4d6cf", "color": "#596158"},
     )
     apply_theme(material_fig)
 
@@ -394,28 +394,28 @@ def build_charts(inputs: SustainabilityInputs, metrics: dict) -> dict:
             value=metrics["circularity_score"],
             title={
                 "text": "Circularity Score",
-                "font": {"color": "#e6edf3", "family": "Space Grotesk", "size": 15},
+                "font": {"color": "#101410", "family": "Space Grotesk", "size": 17},
             },
             number={
                 "suffix": "/100",
-                "font": {"color": "#7ee8a2", "size": 36, "family": "Space Grotesk"},
+                "font": {"color": "#004d2d", "size": 40, "family": "Space Grotesk"},
             },
             gauge={
                 "axis": {
                     "range": [0, 100],
-                    "tickcolor": "#8b949e",
-                    "tickfont": {"color": "#8b949e"},
+                    "tickcolor": "#596158",
+                    "tickfont": {"color": "#596158"},
                 },
-                "bar": {"color": "#2ea04f"},
-                "bgcolor": "#21262d",
-                "bordercolor": "#30363d",
+                "bar": {"color": "#004d2d"},
+                "bgcolor": "#eef0e8",
+                "bordercolor": "#d4d6cf",
                 "steps": [
-                    {"range": [0, 40], "color": "#1c2128"},
-                    {"range": [40, 70], "color": "#1a2f1e"},
-                    {"range": [70, 100], "color": "#1f3d25"},
+                    {"range": [0, 40], "color": "#f3e5e1"},
+                    {"range": [40, 70], "color": "#e9eed9"},
+                    {"range": [70, 100], "color": "#d3e6d9"},
                 ],
                 "threshold": {
-                    "line": {"color": "#7ee8a2", "width": 2},
+                    "line": {"color": "#8ef000", "width": 3},
                     "thickness": 0.75,
                     "value": 80,
                 },
@@ -424,8 +424,8 @@ def build_charts(inputs: SustainabilityInputs, metrics: dict) -> dict:
     )
     gauge_fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)",
-        font={"color": "#8b949e"},
-        margin={"t": 40, "b": 10},
+        font={"color": "#596158"},
+        margin={"t": 48, "b": 16, "l": 14, "r": 14},
     )
 
     return {

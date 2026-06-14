@@ -896,3 +896,320 @@ body {
 .recovery-text { color: #9ca8df; }
 .circularity-text { color: #7fc4ca; }
 .lime-text { color: #96c7a4; }
+
+/* Premium Metalytics AI redesign overrides */
+:root {
+  --dk: #dedad8;
+  --dk-s: #e8e6df;
+  --dk-card: #ffffff;
+  --dk-border: rgba(16, 20, 16, 0.10);
+  --dk-text: #101410;
+  --dk-muted: #596158;
+  --dk-faint: #d4d6cf;
+  --lt: #f8f8f4;
+  --lt-s: #ffffff;
+  --lt-card: #f6f8f1;
+  --lt-border: #d4d6cf;
+  --lt-text: #101410;
+  --lt-muted: #72786f;
+  --lt-faint: #eceee7;
+  --lime: #8ef000;
+  --lime-dk: #004d2d;
+  --lime-bg: rgba(142, 240, 0, 0.15);
+  --lime-border: rgba(0, 77, 45, 0.18);
+  --project-nav-h: 78px;
+  --top-h: 64px;
+  --bot-h: 64px;
+  --side-w: 286px;
+  --detail-w: 360px;
+  --r: 24px;
+  --rs: 999px;
+}
+
+html,
+body {
+  background:
+    radial-gradient(circle at 82% 10%, rgba(142, 240, 0, 0.11), transparent 30%),
+    linear-gradient(135deg, #dedad8, #e9e7e1);
+  color: var(--lt-text);
+}
+
+#project-nav {
+  top: 16px;
+  left: 20px;
+  right: 20px;
+  min-height: 64px;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 28px;
+  background: rgba(248, 248, 244, 0.80);
+  box-shadow: 0 18px 48px rgba(20, 25, 21, 0.12);
+  backdrop-filter: blur(18px);
+  padding: 0 16px 0 10px;
+}
+
+.project-brand {
+  color: #101410;
+  font-size: 15px;
+  gap: 2px;
+}
+
+.project-brand-logo {
+  width: 58px;
+  height: 58px;
+}
+
+.project-nav-links a {
+  color: #50564d;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  padding: 9px 12px;
+}
+
+.project-nav-links a:hover,
+.project-nav-links a.active {
+  border-color: rgba(0, 77, 45, 0.12);
+  background: var(--lime);
+  color: #102000;
+}
+
+#topbar {
+  top: 96px;
+  left: 20px;
+  right: 20px;
+  height: 58px;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 24px;
+  background: rgba(248, 248, 244, 0.84);
+  box-shadow: 0 18px 42px rgba(20, 25, 21, 0.10);
+  backdrop-filter: blur(18px);
+}
+
+.badge,
+.layer-btn,
+.view-btn {
+  border-radius: 999px;
+  border-color: rgba(16, 20, 16, 0.10) !important;
+  background: #ffffff !important;
+  color: #101410 !important;
+  font-weight: 800;
+}
+
+.layer-btn.active,
+.view-btn.active {
+  background: var(--lime) !important;
+  color: #102000 !important;
+  border-color: rgba(0, 77, 45, 0.16) !important;
+}
+
+.view-switcher {
+  border: 1px solid rgba(16, 20, 16, 0.10);
+  border-radius: 999px;
+  background: #fff;
+}
+
+#main-layout {
+  top: 174px;
+  bottom: 80px;
+  left: 20px;
+  right: 20px;
+  gap: 16px;
+}
+
+#sidebar,
+.detail-panel {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 28px;
+  background: rgba(248, 248, 244, 0.92);
+  box-shadow: 0 18px 46px rgba(20, 25, 21, 0.11);
+  overflow: hidden;
+}
+
+#sidebar {
+  border-right: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+.panel-header,
+.rank-tabs,
+.sidebar-footer {
+  background: transparent;
+}
+
+.panel-header {
+  color: #101410;
+  padding: 16px 16px 12px;
+  font-size: 13px;
+}
+
+.rank-tabs {
+  padding: 8px 10px 0;
+  border-bottom-color: rgba(16, 20, 16, 0.08);
+}
+
+.rank-tab {
+  border-radius: 999px;
+  color: #72786f;
+}
+
+.rank-tab.active {
+  background: var(--lime);
+  border-bottom-color: transparent;
+  color: #102000;
+  font-weight: 900;
+}
+
+.rank-list {
+  background: transparent;
+  padding: 8px;
+}
+
+.rank-item {
+  margin-bottom: 6px;
+  border: 1px solid transparent;
+  border-radius: 16px;
+  background: transparent;
+}
+
+.rank-item:hover,
+.rank-item-active {
+  border-color: rgba(0, 77, 45, 0.10);
+  background: #fff;
+  box-shadow: 0 10px 24px rgba(20, 25, 21, 0.08);
+}
+
+.rank-item-active {
+  border-left-color: var(--lime-dk);
+}
+
+.region-btn {
+  min-height: 42px;
+  border-radius: 999px;
+  background: var(--lime);
+  border-color: transparent;
+  color: #102000;
+  font-weight: 900;
+}
+
+#map-container {
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 28px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 18px 46px rgba(20, 25, 21, 0.11);
+}
+
+#map {
+  filter: saturate(1.18) contrast(1.08) brightness(1.03);
+}
+
+#map::after {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  border-radius: 28px;
+}
+
+#map-legend,
+#lulc-legend,
+.geo-tooltip {
+  border: 1px solid rgba(0, 77, 45, 0.24);
+  border-radius: 18px;
+  background: rgba(248, 248, 244, 0.78);
+  box-shadow: 0 14px 30px rgba(20, 25, 21, 0.12);
+  color: #101410;
+  backdrop-filter: blur(8px);
+}
+
+.legend-title {
+  color: #004d2d;
+}
+
+.legend-item {
+  color: #293029;
+}
+
+.leaflet-tile-pane {
+  filter: saturate(1.2) contrast(1.08);
+}
+
+.leaflet-overlay-pane {
+  opacity: 0.96;
+}
+
+.leaflet-marker-pane,
+.leaflet-tooltip-pane,
+.leaflet-popup-pane {
+  filter: none;
+}
+
+.fmarker {
+  border-width: 3px;
+  border-color: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.34);
+  color: #fff;
+  font-weight: 900;
+}
+
+.fmarker-critical { background: #b84b25; }
+.fmarker-high { background: #d67a16; }
+.fmarker-medium { background: #9c9640; }
+.fmarker-low { background: #1f9a70; }
+
+.region-label {
+  background: rgba(20, 28, 22, 0.82);
+  border-color: rgba(255, 255, 255, 0.34) !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.28);
+}
+
+.rl-name {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.55);
+}
+
+.geo-tooltip-region {
+  background: rgba(248, 248, 244, 0.70);
+}
+
+.leaflet-control-zoom a {
+  color: #101410 !important;
+  background: rgba(255, 255, 255, 0.88) !important;
+}
+
+.detail-panel {
+  border-left: 1px solid rgba(255, 255, 255, 0.72);
+}
+
+.dp-header {
+  background: #004d2d;
+  border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+
+.score-card,
+.metric-row,
+.transport-card,
+.recommendation,
+.finding-item,
+.region-card {
+  border-radius: 18px;
+  background: #fff;
+  border-color: rgba(16, 20, 16, 0.08);
+  box-shadow: 0 10px 24px rgba(20, 25, 21, 0.06);
+}
+
+#bottombar {
+  left: 20px;
+  right: 20px;
+  bottom: 14px;
+  height: 52px;
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  border-radius: 24px;
+  background: rgba(248, 248, 244, 0.86);
+  box-shadow: 0 18px 42px rgba(20, 25, 21, 0.10);
+  backdrop-filter: blur(18px);
+}
+
+.stat-label {
+  color: #72786f;
+}
+
+.stat-value {
+  color: #101410;
+}

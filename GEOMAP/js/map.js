@@ -153,11 +153,11 @@ const GeoMap = (() => {
       // GEE-style polygon: vivid fill, bright white border, no dash — crisp classified-map look
       const poly = L.geoJSON(geojsonFeature, {
         style: {
-          color: '#ffffff',
+          color: '#f7fff3',
           fillColor: color,
-          fillOpacity: 0.18,
-          weight: 1.25,
-          opacity: 0.70,
+          fillOpacity: 0.34,
+          weight: 2.4,
+          opacity: 0.95,
           dashArray: null
         }
       });
@@ -188,8 +188,8 @@ const GeoMap = (() => {
         L.circle([f.lat, f.lng], {
           radius: r,
           color: _eisColor(f.eis), fillColor: 'transparent',
-          fillOpacity: 0, weight: 1, opacity: 0.28,
-          dashArray: '6 10'
+          fillOpacity: 0, weight: 2.2, opacity: 0.68,
+          dashArray: '7 7'
         }).addTo(_segmentGroup);
       });
     });
@@ -228,11 +228,16 @@ const GeoMap = (() => {
     _routeGroup = L.layerGroup();
     _data.facilities.forEach(f => {
       const color  = _routeColor(f.normTrans);
-      const weight = Math.max(1.5, Math.min(4, f.productionVolume / 180000 * 4));
+      const weight = Math.max(3.2, Math.min(7, f.productionVolume / 180000 * 6));
 
       L.polyline([[f.lat, f.lng], [f.transportRoute.destLat, f.transportRoute.destLng]], {
-        color, weight, opacity: 0.48,
-        dashArray: f.normTrans > 0.7 ? '8 5' : null
+        color: '#101410', weight: weight + 3, opacity: 0.42,
+        dashArray: f.normTrans > 0.7 ? '9 6' : null
+      }).addTo(_routeGroup);
+
+      L.polyline([[f.lat, f.lng], [f.transportRoute.destLat, f.transportRoute.destLng]], {
+        color, weight, opacity: 0.92,
+        dashArray: f.normTrans > 0.7 ? '9 6' : null
       }).bindTooltip(
         `<strong>${f.shortName} → ${f.transportRoute.destination}</strong><br>
          ${f.transportRoute.mode} · ${f.transportRoute.distanceKm.toLocaleString()} km<br>
@@ -241,7 +246,7 @@ const GeoMap = (() => {
       ).addTo(_routeGroup);
 
       L.circleMarker([f.transportRoute.destLat, f.transportRoute.destLng], {
-        radius: 4, color: '#64748b', fillColor: '#94a3b8', fillOpacity: 0.9, weight: 1
+        radius: 6, color: '#ffffff', fillColor: '#64748b', fillOpacity: 1, weight: 2
       }).bindTooltip(f.transportRoute.destination, { className: 'geo-tooltip' }).addTo(_routeGroup);
     });
     if (_routesOn) _routeGroup.addTo(_map);
